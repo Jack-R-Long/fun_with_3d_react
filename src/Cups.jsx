@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Suspense, useRef, useState } from "react";
-import { Canvas, useFrame, useThree, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
 import { EffectComposer, DepthOfField } from "@react-three/postprocessing";
 
@@ -56,7 +56,7 @@ function Cup({ index, z, speed }) {
 export default function Cups({ speed = 1, count = 100, depth = 80 }) {
   return (
     <Canvas gl={{ alpha: false }} camera={{ near: 0.01, far: 110, fov: 30 }}>
-      <color attach="background" args={["#2C244B"]} />
+      <color attach="background" args={["#720404"]} />
       <spotLight position={[10, 10, 10]} intensity={1} />
       <Suspense fallback={null}>
         <Environment preset="sunset" />
