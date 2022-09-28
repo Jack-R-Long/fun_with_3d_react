@@ -1,21 +1,47 @@
-import { Suspense, useState } from 'react'
-import './styles.css'
-import { Overlay } from './layout/Overlay'
+import { useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Physics, usePlane, useBox, Debug } from "@react-three/cannon";
+import { useGLTF, OrbitControls, ContactShadows } from "@react-three/drei";
 
-import Cups from './Cups'
-import { FadeIn } from './layout/styles'
-// Comment the above and uncomment the following to import the WebGL BG lazily for faster loading times
-// const Bananas = lazy(() => import('./Bananas'))
+function Plane(props) {
+  const [ref] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], ...props }));
+  return (
+    <mesh ref={ref}>
+      <planeGeometry args={[100, 100]} />
+    </mesh>
+  );
+}
+
+function Cube(props) {
+  const [ref] = useBox(() => ({ mass: 1, position: [0, 5, 0], ...props }));
+
+  return (
+    <mesh ref={ref}>
+      <boxGeometry />
+      <meshBasicMaterial color="hotpink" />
+    </mesh>
+  );
+}
+
+function Scene(props) {
+  const {scene} = useGLTF('/jackattacktext.glb');
+  return (
+    <primitive object={scene}  {...props}/>
+  )
+}
 
 export default function App() {
-  const [speed, set] = useState(1)
   return (
-    <>
-      <Suspense fallback={null}>
-        <Cups speed={speed} />
-        <FadeIn />
-      </Suspense>
-      <Overlay />
-    </>
+
+      <Canvas camera={{ position: [-10, 10, 40], fov: 50 }}>
+        <hemisphereLight color="white" groundColor="blue" intensity={0.75} />
+        <spotLight position={[50, 50, 10]} angle={0.15} penumbra={1} />
+        <group position={[0, 0, 0]}>
+          <Scene position={[-20, 0.25, 0]} scale={10}/>
+          <ContactShadows scale={20} blur={10} far={20} />
+        </group>
+        <OrbitControls />
+      </Canvas>
+
   );
 }
