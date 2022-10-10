@@ -23,25 +23,31 @@ function Cube(props) {
   );
 }
 
-function Scene(props) {
-  const {scene} = useGLTF('/jackattacktext.glb');
-  return (
-    <primitive object={scene}  {...props}/>
-  )
+function JackAttack(props) {
+  const { scene } = useGLTF("/jackattacktext.glb");
+  return <primitive object={scene} {...props} />;
+}
+
+function Space(props) {
+  const { scene } = useGLTF("/low_poly_ufo_scene.glb");
+  return <primitive object={scene} {...props} />;
 }
 
 export default function App() {
   return (
-
-      <Canvas camera={{ position: [-10, 10, 40], fov: 50 }}>
-        <hemisphereLight color="white" groundColor="blue" intensity={0.75} />
-        <spotLight position={[50, 50, 10]} angle={0.15} penumbra={1} />
-        <group position={[0, 0, 0]}>
-          <Scene position={[-20, 0.25, 0]} scale={10}/>
-          <ContactShadows scale={20} blur={10} far={20} />
-        </group>
-        <OrbitControls />
-      </Canvas>
-
+    <Canvas camera={{ fov: 50 }}>
+      <hemisphereLight color="white" groundColor="blue" intensity={0.75} />
+      <spotLight position={[50, 50, 10]} />
+      <group position={[0, 0, 0]}>
+        {/* <JackAttack scale={2} /> */}
+        <Space scale={.0015}/>
+        <ContactShadows scale={20} blur={10} far={20} />
+      </group>
+      <OrbitControls
+        autoRotate
+        maxPolarAngle={Math.PI / 3}
+        minPolarAngle={Math.PI / 3}
+      />
+    </Canvas>
   );
 }
