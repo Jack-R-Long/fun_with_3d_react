@@ -9,16 +9,6 @@ import {
   useTexture,
 } from "@react-three/drei";
 
-
-function Plane(props) {
-  const [ref] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], ...props }));
-  return (
-    <mesh ref={ref}>
-      <planeGeometry args={[100, 100]} />
-    </mesh>
-  );
-}
-
 function TwitterLogo({ time, ...props }) {
   const { scene } = useGLTF("/twitter_logo.glb");
   const ref = useRef();
@@ -31,7 +21,7 @@ function TwitterLogo({ time, ...props }) {
   // );
   return (
     <mesh {...props} onClick={(e) => alert("HI")} ref={ref}>
-      <primitive object={scene} scale={0.01} />;
+      <primitive object={scene} scale={0.006} />;
       <Html distanceFactor={10}>
         <div className="content">
           <a href="https://twitter.com/jack_attacking" target="_black">
@@ -44,20 +34,18 @@ function TwitterLogo({ time, ...props }) {
 }
 
 function LinkedIn({ time, ...props }) {
-  const { scene  } = useGLTF("/linkedin_logo.glb");
+  const { scene } = useGLTF("/linkedin_logo.glb");
   const ref = useRef();
   ref.onClick = (e) => {
     alert("hi");
   };
   const [hover, setHover] = useState(false);
-    useFrame(() => 
-      ref.current.rotation.y += 0.02
-    );
+  useFrame(() => (ref.current.rotation.y += 0.02));
   return (
-    <group {...props} ref={ref} onClick={(e) => alert('Hi')}>
+    <group {...props} ref={ref} onClick={(e) => alert("Hi")}>
       <primitive
         object={scene}
-        scale={1}
+        scale={.75}
 
         // onPointerOver={() => setHover(true)}
         // onPointerOut={() => setHover(false)}
@@ -79,7 +67,7 @@ function M1({ ...props }) {
   const texture = useTexture("/Chroma Blue.jpg");
   const { nodes, materials } = useGLTF("/computer.glb");
   return (
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} rotation-x={0.425}>
       <group position={[0, -0.43, -11.35]} rotation={[Math.PI / 2, 0, 0]}>
         <mesh
           geometry={nodes.back_1.geometry}
@@ -124,7 +112,7 @@ function Computer({ time, ...props }) {
 
 function Dodecahedron({ time, ...props }) {
   return (
-    <mesh {...props} >
+    <mesh {...props}>
       <dodecahedronGeometry />
       <meshStandardMaterial roughness={0.75} emissive="#404057" />
       <Html distanceFactor={10}>
@@ -138,20 +126,23 @@ function Dodecahedron({ time, ...props }) {
 }
 
 function Squad() {
-  const ref = useRef();
+  const orbitRef = useRef();
   useFrame(
     () =>
-      (ref.current.rotation.x =
-        ref.current.rotation.y =
-        ref.current.rotation.z +=
+      (orbitRef.current.rotation.x =
+        orbitRef.current.rotation.y =
+        orbitRef.current.rotation.z +=
           0.01)
   );
   return (
-    <group ref={ref}>
-      <Dodecahedron />
-      <LinkedIn position={[-4, 0, 0]} />
-      <Computer position={[0, -4, -3]} />
-      <TwitterLogo position={[4, 0, 0]} />
+    <group>
+      <Computer />
+      <group ref={orbitRef}>
+        <LinkedIn position={[-6, 0, 0]} />
+        <Dodecahedron position={[0, -6, -3]} />
+        <Dodecahedron position={[0, 6, 3]} />
+        <TwitterLogo position={[6, 0, 0]} />
+      </group>
     </group>
   );
 }
