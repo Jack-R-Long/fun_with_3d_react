@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Physics, usePlane, useBox, Debug } from "@react-three/cannon";
 import {
@@ -6,7 +6,9 @@ import {
   OrbitControls,
   ContactShadows,
   Html,
+  useTexture,
 } from "@react-three/drei";
+
 
 function Plane(props) {
   const [ref] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], ...props }));
@@ -17,30 +19,112 @@ function Plane(props) {
   );
 }
 
-function Cube(props) {
-  const [ref] = useBox(() => ({ mass: 1, position: [0, 5, 0], ...props }));
-
+function TwitterLogo({ time, ...props }) {
+  const { scene } = useGLTF("/twitter_logo.glb");
+  const ref = useRef();
+  // useFrame(
+  //   () =>
+  //     (ref.current.rotation.x =
+  //       ref.current.rotation.y =
+  //       ref.current.rotation.z +=
+  //         0.02)
+  // );
   return (
-    <mesh ref={ref}>
-      <boxGeometry />
-      <meshBasicMaterial color="hotpink" />
+    <mesh {...props} onClick={(e) => alert("HI")} ref={ref}>
+      <primitive object={scene} scale={0.01} />;
+      <Html distanceFactor={10}>
+        <div className="content">
+          <a href="https://twitter.com/jack_attacking" target="_black">
+            @JackAttack
+          </a>
+        </div>
+      </Html>
     </mesh>
   );
 }
 
-function JackAttack(props) {
-  const { scene } = useGLTF("/jackattacktext.glb");
-  return <primitive object={scene} {...props} />;
+function LinkedIn({ time, ...props }) {
+  const { scene  } = useGLTF("/linkedin_logo.glb");
+  const ref = useRef();
+  ref.onClick = (e) => {
+    alert("hi");
+  };
+  const [hover, setHover] = useState(false);
+    useFrame(() => 
+      ref.current.rotation.y += 0.02
+    );
+  return (
+    <group {...props} ref={ref} onClick={(e) => alert('Hi')}>
+      <primitive
+        object={scene}
+        scale={1}
+
+        // onPointerOver={() => setHover(true)}
+        // onPointerOut={() => setHover(false)}
+        // rotateX={Math.PI / 2}
+      />
+      ;
+      <Html distanceFactor={10} onClick={(e) => console.log("click")}>
+        <div className="content">
+          <a href="https://twitter.com/jack_attacking" target="_black">
+            Linked In
+          </a>
+        </div>
+      </Html>
+    </group>
+  );
 }
 
-function Space(props) {
-  const { scene } = useGLTF("/low_poly_ufo_scene.glb");
-  return <primitive object={scene} {...props} />;
+function M1({ ...props }) {
+  const texture = useTexture("/Chroma Blue.jpg");
+  const { nodes, materials } = useGLTF("/computer.glb");
+  return (
+    <group {...props} dispose={null}>
+      <group position={[0, -0.43, -11.35]} rotation={[Math.PI / 2, 0, 0]}>
+        <mesh
+          geometry={nodes.back_1.geometry}
+          material={materials.blackmatte}
+        />
+        <mesh
+          receiveShadow
+          castShadow
+          geometry={nodes.back_2.geometry}
+          material={materials.aluminium}
+        />
+        <mesh geometry={nodes.matte.geometry}>
+          <meshLambertMaterial map={texture} toneMapped={false} />
+        </mesh>
+      </group>
+      {/* {children} */}
+      <mesh
+        geometry={nodes.body_1.geometry}
+        material={materials.aluminium}
+        material-color="#aaaaaf"
+        material-envMapIntensity={0.2}
+      />
+      <mesh geometry={nodes.body_2.geometry} material={materials.blackmatte} />
+    </group>
+  );
+}
+
+function Computer({ time, ...props }) {
+  return (
+    <mesh {...props} onClick={(e) => alert("HI")}>
+      <M1 scale={0.15} />
+      <Html distanceFactor={10}>
+        <div className="content">
+          <a href="https://twitter.com/jack_attacking" target="_black">
+            Github
+          </a>
+        </div>
+      </Html>
+    </mesh>
+  );
 }
 
 function Dodecahedron({ time, ...props }) {
   return (
-    <mesh {...props}>
+    <mesh {...props} >
       <dodecahedronGeometry />
       <meshStandardMaterial roughness={0.75} emissive="#404057" />
       <Html distanceFactor={10}>
@@ -53,29 +137,6 @@ function Dodecahedron({ time, ...props }) {
   );
 }
 
-function TwitterLogo({ time, ...props }) {
-    const { scene } = useGLTF("/twitter_logo.glb");
-      // const ref = useRef();
-      // useFrame(
-      //   () =>
-      //     (ref.current.rotation.x =
-      //       ref.current.rotation.y =
-      //       ref.current.rotation.z +=
-      //         0.02)
-      // );
-      return (
-        <mesh {...props}>
-          <primitive object={scene} />;
-          <Html distanceFactor={10} position={[2, 0, 0]}>
-            <div className="content">
-              @JackAttack
-            </div>
-          </Html>
-        </mesh>
-      );
-}
-
-
 function Squad() {
   const ref = useRef();
   useFrame(
@@ -87,9 +148,10 @@ function Squad() {
   );
   return (
     <group ref={ref}>
-      <Dodecahedron position={[-2, 0, 0]} />
-      <Dodecahedron position={[0, -2, -3]} />
-      <TwitterLogo position={[2, 0, 0]} />
+      <Dodecahedron />
+      <LinkedIn position={[-4, 0, 0]} />
+      <Computer position={[0, -4, -3]} />
+      <TwitterLogo position={[4, 0, 0]} />
     </group>
   );
 }
