@@ -7,8 +7,10 @@ import {
   Sky,
   Environment,
   Cloud,
+  OrbitControls,
 } from "@react-three/drei";
-import { Bird, Cat, Lion, Plane, PurpleCube, Unicorn } from "./models";
+import { Bird, Cat, Plane, Unicorn, JackAttack } from "./models";
+import { Computer } from "./computer/Computer.jsx";
 
 function TwitterBird({ time, ...props }) {
   const ref = useRef();
@@ -43,7 +45,7 @@ function GithubCat({ time, ...props }) {
       onClick={() => window.open("https://github.com/Jack-R-Long", "_blank")}
     >
       <Cat scale={0.3} />
-      <Html distanceFactor={20} >
+      <Html distanceFactor={20}>
         <div className="content">
           <a href="https://github.com/Jack-R-Long" target="_black">
             Github
@@ -92,9 +94,7 @@ function AirForcePlane({ time, ...props }) {
     >
       <Plane scale={0.5} />
       <Html distanceFactor={20}>
-        <div
-          className="content content-shift-up-60"
-        >
+        <div className="content content-shift-up-60">
           <a
             href="https://www.linkedin.com/in/jack-long-953201157/"
             target="_black"
@@ -157,19 +157,17 @@ function Dodecahedron({ time, ...props }) {
 function GroupOrbit() {
   const orbitRef = useRef();
   const vertOrbit = useRef();
-  useFrame(
-    () => {
-      orbitRef.current.rotation.x = orbitRef.current.rotation.y += 0.01
-      vertOrbit.current.rotation.y -= 0.01
-    }
-  );
+  useFrame(() => {
+    orbitRef.current.rotation.x = orbitRef.current.rotation.y += 0.01;
+    vertOrbit.current.rotation.y -= 0.01;
+  });
   return (
     <group>
-      <M1 />
+      <Computer />
       <group ref={vertOrbit}>
         <AirForcePlane
           position={[0, 0, 9]}
-          rotation={[-Math.PI /2, Math.PI / 2, Math.PI / 2]}
+          rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]}
         />
         <BuildSpaceUnicorn
           position={[0, 0, -9]}
@@ -207,6 +205,13 @@ export default function App() {
         <Sky />
         <spotLight position={[50, 50, 10]} />
         <GroupOrbit />
+        <JackAttack position={[5, 5, 0]} color="red" />
+        <OrbitControls
+          enablePan={false}
+          enableZoom={false}
+          minPolarAngle={Math.PI / 2.2}
+          maxPolarAngle={Math.PI / 2.2}
+        />
       </Suspense>
     </Canvas>
   );
