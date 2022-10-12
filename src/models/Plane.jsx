@@ -14,7 +14,7 @@ export function Plane(props) {
   return (
     <group {...props} dispose={null}>
       <group rotation={[0, 0, 0]}>
-        <group rotation={[Math.PI / 2, 0, 0]}>
+        <group rotation={[0, 0, 0]}>
           <group position={[0, 0.46, 0.07]}>
             <mesh
               castShadow
