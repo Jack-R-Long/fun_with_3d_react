@@ -1,23 +1,21 @@
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Physics, usePlane, useBox, Debug } from "@react-three/cannon";
-import {
-  useGLTF,
-  OrbitControls,
-  ContactShadows,
-  Html,
-  useTexture,
-} from "@react-three/drei";
-import { MeshLambertMaterial } from "three";
+import { useGLTF, Html, useTexture } from "@react-three/drei";
+import { Bird, Cat, Lion, Plane } from "./models";
 
 function TwitterBird({ time, ...props }) {
-  const { scene } = useGLTF("/voxel_twitter_bird.glb");
   const ref = useRef();
   useFrame(() => (ref.current.rotation.y += 0.02));
   return (
-    <mesh {...props} onClick={(e) => alert("HI")} ref={ref}>
-      <primitive object={scene} scale={0.05} />;
-      <Html distanceFactor={20}>
+    <mesh
+      {...props}
+      ref={ref}
+      onClick={() =>
+        window.open("https://twitter.com/jack_attacking", "_blank")
+      }
+    >
+      <Bird scale={0.05} />;
+      <Html distanceFactor={15}>
         <div className="content">
           <a href="https://twitter.com/jack_attacking" target="_black">
             @JackAttack
@@ -29,15 +27,18 @@ function TwitterBird({ time, ...props }) {
 }
 
 function GithubCat({ time, ...props }) {
-  const { scene } = useGLTF("/voxel_github_cat.glb");
   const ref = useRef();
-  useFrame(() => (ref.current.rotation.y = ref.current.rotation.z += 0.02));
+  useFrame(() => (ref.current.rotation.y += 0.02));
   return (
-    <mesh {...props} onClick={(e) => alert("HI")} ref={ref}>
-      <primitive object={scene} scale={0.3} />;
+    <mesh
+      {...props}
+      ref={ref}
+      onClick={() => window.open("https://github.com/Jack-R-Long", "_blank")}
+    >
+      <Cat scale={0.3} />
       <Html distanceFactor={20}>
         <div className="content">
-          <a href="https://twitter.com/jack_attacking" target="_black">
+          <a href="https://github.com/Jack-R-Long" target="_black">
             Github
           </a>
         </div>
@@ -46,32 +47,45 @@ function GithubCat({ time, ...props }) {
   );
 }
 
-function LinkedIn({ time, ...props }) {
-  const { scene } = useGLTF("/linkedin_logo.glb");
+function PanthaLion({ time, ...props }) {
   const ref = useRef();
-  ref.onClick = (e) => {
-    alert("hi");
-  };
-  const [hover, setHover] = useState(false);
-  useFrame(() => (ref.current.rotation.y += 0.02));
+  // useFrame(() => (ref.current.rotation.y += 0.02));
   return (
-    <group {...props} ref={ref} onClick={(e) => alert("Hi")}>
-      <primitive
-        object={scene}
-        scale={0.75}
-
-        // onPointerOver={() => setHover(true)}
-        // onPointerOut={() => setHover(false)}
-      />
-      ;
-      <Html distanceFactor={20} onClick={(e) => console.log("click")}>
+    <mesh
+      {...props}
+      ref={ref}
+      onClick={() => window.open("https://www.hellopantha.com/", "_blank")}
+    >
+      <Lion scale={1.3}/>
+      <Html distanceFactor={20}>
         <div className="content">
-          <a href="https://twitter.com/jack_attacking" target="_black">
+          <a href="https://www.hellopantha.com/" target="_black">
+            Pantha NFT
+          </a>
+        </div>
+      </Html>
+    </mesh>
+  );
+}
+
+function AirForcePlane({ time, ...props }) {
+  const ref = useRef();
+  // useFrame(() => (ref.current.rotation.y += 0.02));
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      onClick={() => window.open("https://www.linkedin.com/in/jack-long-953201157/", "_blank")}
+    >
+      <Plane scale={0.5} />
+      <Html distanceFactor={20}>
+        <div className="content">
+          <a href="https://www.linkedin.com/in/jack-long-953201157/" target="_black">
             LinkedIn
           </a>
         </div>
       </Html>
-    </group>
+    </mesh>
   );
 }
 
@@ -84,7 +98,6 @@ function M1({ ...props }) {
       dispose={null}
       rotation-x={0.425}
       scale={0.2}
-      onClick={(e) => alert("HI")}
     >
       <group position={[0, -0.43, -11.35]} rotation={[Math.PI / 2, 0, 0]}>
         <mesh
@@ -128,24 +141,7 @@ function Dodecahedron({ time, ...props }) {
   );
 }
 
-function TwitterDodecha({ time, ...props }) {
-  const texture = useTexture("/Chroma Blue.jpg");
-
-  return (
-    <mesh {...props}>
-      <dodecahedronGeometry />
-      <meshStandardMaterial map={texture} toneMapped={false} />
-      <Html distanceFactor={10}>
-        <div className="content">
-          hello <br />
-          world
-        </div>
-      </Html>
-    </mesh>
-  );
-}
-
-function Squad() {
+function GroupOrbit() {
   const orbitRef = useRef();
   useFrame(
     () => (orbitRef.current.rotation.x = orbitRef.current.rotation.y += 0.01)
@@ -154,10 +150,10 @@ function Squad() {
     <group>
       <M1 />
       <group ref={orbitRef}>
-        <GithubCat position={[0, -7, 0]}/>
-        <Dodecahedron position={[0, 0, 7]} />
-        <Dodecahedron position={[0, 0, -7]} />
-        <TwitterBird position={[0, 7, 0]} />
+        <GithubCat position={[0, -9, 0]} />
+        <AirForcePlane position={[0, 0, 9]} />
+        <PanthaLion position={[0, 0, -9]} />
+        <TwitterBird position={[0, 9, 0]} />
       </group>
     </group>
   );
@@ -169,14 +165,7 @@ export default function App() {
       <Suspense fallback={null}>
         <hemisphereLight color="white" groundColor="blue" intensity={0.75} />
         <spotLight position={[50, 50, 10]} />
-        <Squad />
-        {/* <JackAttack scale={2} /> */}
-        {/* <Space scale={.0015}/> */}
-        {/* <OrbitControls
-        autoRotate
-        maxPolarAngle={Math.PI / 3}
-        minPolarAngle={Math.PI / 3}
-      /> */}
+        <GroupOrbit />
       </Suspense>
     </Canvas>
   );
