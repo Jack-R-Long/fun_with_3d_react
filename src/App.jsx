@@ -1,6 +1,13 @@
 import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Html, useTexture } from "@react-three/drei";
+import {
+  useGLTF,
+  Html,
+  useTexture,
+  Sky,
+  Environment,
+  Cloud,
+} from "@react-three/drei";
 import { Bird, Cat, Lion, Plane, PurpleCube, Unicorn } from "./models";
 
 function TwitterBird({ time, ...props }) {
@@ -47,27 +54,6 @@ function GithubCat({ time, ...props }) {
   );
 }
 
-function SolCube({ time, ...props }) {
-  const ref = useRef();
-  useFrame(() => (ref.current.rotation.y = ref.current.rotation.x += 0.02));
-  return (
-    <mesh
-      {...props}
-      ref={ref}
-      onClick={() => window.open("https://buildspace.so/@jack_attack", "_blank")}
-    >
-      <PurpleCube scale={0.5} />
-      <Html distanceFactor={20}>
-        <div className="content">
-          <a href="https://buildspace.so/@jack_attack" target="_black">
-            Web3 Development
-          </a>
-        </div>
-      </Html>
-    </mesh>
-  );
-}
-
 function BuildSpaceUnicorn({ time, ...props }) {
   const ref = useRef();
   // useFrame(() => (ref.current.rotation.y = ref.current.rotation.x += 0.02));
@@ -81,7 +67,7 @@ function BuildSpaceUnicorn({ time, ...props }) {
     >
       <Unicorn scale={0.5} />
       <Html distanceFactor={20}>
-        <div className="content content-shift-up">
+        <div className="content content-shift-up-100">
           <a href="https://buildspace.so/@jack_attack" target="_black">
             Web3 BuildSpace
           </a>
@@ -106,7 +92,9 @@ function AirForcePlane({ time, ...props }) {
     >
       <Plane scale={0.5} />
       <Html distanceFactor={20}>
-        <div className="content">
+        <div
+          className="content content-shift-up-60"
+        >
           <a
             href="https://www.linkedin.com/in/jack-long-953201157/"
             target="_black"
@@ -200,8 +188,23 @@ export default function App() {
   return (
     <Canvas camera={{ position: [0, 0, 15] }}>
       <Suspense fallback={null}>
-        <fog attach="fog" color="white" />
-        <hemisphereLight color="white" groundColor="blue" intensity={0.75} />
+        <hemisphereLight intensity={0.45} />
+        <spotLight
+          angle={0.4}
+          penumbra={1}
+          position={[20, 30, 2.5]}
+          castShadow
+          shadow-bias={-0.00001}
+        />
+        <directionalLight
+          color="red"
+          position={[-10, -10, 0]}
+          intensity={1.5}
+        />
+        <Cloud scale={1.5} position={[20, 0, 0]} />
+        <Cloud scale={1} position={[-20, 10, 0]} />
+        <Environment preset="city" />
+        <Sky />
         <spotLight position={[50, 50, 10]} />
         <GroupOrbit />
       </Suspense>

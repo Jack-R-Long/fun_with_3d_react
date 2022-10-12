@@ -5,7 +5,7 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: gray;
+  background-color: white;
 }
 
 .content {
@@ -18,9 +18,12 @@ body,
   border-radius: 5px;
 }
 
-.content-shift-up {
+.content-shift-up-100 {
     transform: translate3d(calc(50% + 40px), calc(50% + -100px), 0);
+}
 
+.content-shift-up-60 {
+    transform: translate3d(calc(50% + 40px), calc(50% + -60px), 0);
 }
 
 .content::before {
