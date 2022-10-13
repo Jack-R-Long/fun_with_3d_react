@@ -11,7 +11,7 @@ export const Typing = () => {
               " ",
               "I love building things, breaking things, and talking $%!@",
               " ",
-              "Click the computer and drag it around for fun!",
+              "Click and drag to look around, scroll to zoom",
               " ",
               "Click the bird to go to my Twitter ♥️",
               " ",

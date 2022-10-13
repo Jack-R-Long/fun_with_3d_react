@@ -107,53 +107,6 @@ function AirForcePlane({ time, ...props }) {
   );
 }
 
-function M1({ ...props }) {
-  const texture = useTexture("/Chroma Blue.jpg");
-  const { nodes, materials } = useGLTF("/computer.glb");
-  return (
-    <group {...props} dispose={null} rotation-x={0.425} scale={0.2}>
-      <group position={[0, -0.43, -11.35]} rotation={[Math.PI / 2, 0, 0]}>
-        <mesh
-          geometry={nodes.back_1.geometry}
-          material={materials.blackmatte}
-        />
-        <mesh
-          receiveShadow
-          castShadow
-          geometry={nodes.back_2.geometry}
-          material={materials.aluminium}
-        />
-        <mesh geometry={nodes.matte.geometry}>
-          <meshLambertMaterial map={texture} toneMapped={false} />
-        </mesh>
-      </group>
-      {/* {children} */}
-      <mesh
-        geometry={nodes.body_1.geometry}
-        material={materials.aluminium}
-        material-color="#aaaaaf"
-        material-envMapIntensity={0.2}
-      />
-      <mesh geometry={nodes.body_2.geometry} material={materials.blackmatte} />
-    </group>
-  );
-}
-
-function Dodecahedron({ time, ...props }) {
-  return (
-    <mesh {...props}>
-      <dodecahedronGeometry />
-      <meshStandardMaterial roughness={0.75} emissive="#404057" />
-      <Html distanceFactor={10}>
-        <div className="content">
-          hello <br />
-          world
-        </div>
-      </Html>
-    </mesh>
-  );
-}
-
 function GroupOrbit() {
   const orbitRef = useRef();
   const vertOrbit = useRef();
@@ -205,10 +158,10 @@ export default function App() {
         <Sky />
         <spotLight position={[50, 50, 10]} />
         <GroupOrbit />
-        <JackAttack position={[5, 5, 0]} color="red" />
+        <JackAttack position={[-2.5, 8, 0]} color="red" />
         <OrbitControls
           enablePan={false}
-          enableZoom={false}
+          // enableZoom={false}
           minPolarAngle={Math.PI / 2.2}
           maxPolarAngle={Math.PI / 2.2}
         />
