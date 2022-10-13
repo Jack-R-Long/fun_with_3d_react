@@ -47,10 +47,25 @@ a {
 .computer-content {
   width: 334px;
   height: 216px;
-  background: #f0f0f0;
+  background: black;
   border-radius: 3px;
   /* overflow-y: auto; */
-  padding: 0;
+  padding: 2;
+}
+
+.computer-text {
+  position: absolute;
+  width: inherit;
+  height: 100%;
+  font-family: "Courier New", monospace;
+  color: green;
+  pointer-events: none;
+  padding: 10px;
+  font-size: 13px !important;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-right: 20px;
+  width: 600px;
 }
 
 .wrapper {
