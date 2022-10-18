@@ -1,14 +1,6 @@
 import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  useGLTF,
-  Html,
-  useTexture,
-  Sky,
-  Environment,
-  Cloud,
-  OrbitControls,
-} from "@react-three/drei";
+import { Html, Environment, Cloud, OrbitControls } from "@react-three/drei";
 import { Bird, Cat, Plane, Unicorn, JackAttack } from "./models";
 import { Computer } from "./computer/Computer.jsx";
 
@@ -137,8 +129,8 @@ function GroupOrbit() {
 
 export default function App() {
   return (
-    <Canvas camera={{ position: [0, 0, 15] }}>
-      <Suspense fallback={null}>
+    <Suspense fallback={null}>
+      <Canvas camera={{ position: [0, 0, 15] }}>
         <hemisphereLight intensity={0.45} />
         <spotLight
           angle={0.4}
@@ -155,7 +147,7 @@ export default function App() {
         <Cloud scale={1.5} position={[20, 0, 0]} />
         <Cloud scale={1} position={[-20, 10, 0]} />
         <Environment preset="city" />
-        <Sky />
+        {/* <Sky /> */}
         <spotLight position={[50, 50, 10]} />
         <GroupOrbit />
         <JackAttack position={[-2.5, 8, 0]} color="red" />
@@ -165,7 +157,7 @@ export default function App() {
           minPolarAngle={Math.PI / 2.2}
           maxPolarAngle={Math.PI / 2.2}
         />
-      </Suspense>
-    </Canvas>
+      </Canvas>
+    </Suspense>
   );
 }
